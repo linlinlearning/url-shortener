@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
+const bodyParser = require('body-parser')
 
 // include Record model
 const Record = require('./models/record.js')
@@ -13,7 +14,6 @@ if (process.env.NODE_ENV !== 'production') {
   }
 
 mongoose.connect(process.env.MONGODB_URI)
-
 const db = mongoose.connection
 db.on('error', () => { console.log('mongodb error!') })
 db.once('open', () => { console.log('mongodb connected!') })
@@ -24,9 +24,24 @@ const port = 3000
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 app.use(express.static('public'))
+app.use(bodyParser.urlencoded({ extended: true }))
 
+
+// define route for index page
 app.get('/', (req, res) => {
     res.render('index')
+})
+
+// define route for adding a URL
+app.post('/records', (req, res) => {
+    const url = req.body.url
+    const url_short = shorten()
+    return Record.create({ 
+        url: url,
+        url_short: url_short 
+    })  
+        .then(() => res.render('success', { url_short })) 
+        .catch(error => console.log(error))
 })
 
 app.listen(port, () => {
