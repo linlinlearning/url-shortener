@@ -1,8 +1,10 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const shorten = require('./models/shorten.js')
+
 
 if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
+    require('dotenv').config() 
   }
 
 mongoose.connect(process.env.MONGODB_URI)
