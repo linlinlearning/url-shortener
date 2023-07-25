@@ -16,7 +16,7 @@ db.once('open', () => {
   for(let i = 0; i < seederData.length; i++) {
     const url_short = shorten()
     Record.create({
-      url: seederData[i].url,
+      url_full: seederData[i].url_full,
       url_short: url_short
     })
   }

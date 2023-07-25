@@ -33,15 +33,22 @@ app.get('/', (req, res) => {
 })
 
 // define route for adding a URL
-app.post('/records', (req, res) => {
+app.post('/records', async (req, res) => {
     const url_full = req.body.url_full
-    const url_short = shorten()
-    return Record.create({ 
-        url_full: url_full,
-        url_short: url_short 
-    })  
-        .then(() => res.render('success', { url_full, url_short })) 
-        .catch(error => console.log(error))
+    const result = await Record.find({ url_full: url_full}).exec()
+
+    if (result.length > 0) {
+        const foundData = result[0]
+        res.render('success', { url_full: url_full, url_short: foundData.url_short})
+    } else {
+        const url_short = shorten()
+        await Record.create({ 
+            url_full: url_full,
+            url_short: url_short 
+        })  
+            .then(() => res.render('success', { url_full, url_short })) 
+            .catch(error => console.log(error))
+    } 
 })
 
 app.listen(port, () => {
