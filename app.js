@@ -34,13 +34,13 @@ app.get('/', (req, res) => {
 
 // define route for adding a URL
 app.post('/records', (req, res) => {
-    const url = req.body.url
+    const url_full = req.body.url_full
     const url_short = shorten()
     return Record.create({ 
-        url: url,
+        url_full: url_full,
         url_short: url_short 
     })  
-        .then(() => res.render('success', { url_short })) 
+        .then(() => res.render('success', { url_full, url_short })) 
         .catch(error => console.log(error))
 })
 

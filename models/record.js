@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const recordSchema = mongoose.Schema({
-    url: {
+    url_full: {
         type: String,
         require: true
     },
