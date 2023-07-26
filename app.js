@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 const Record = require('./models/record.js')
 
 // include shorten function
-const shorten = require('./models/shorten.js')
+const shorten = require('./utils/shorten.js')
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config() 
