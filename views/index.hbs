@@ -1,6 +1,27 @@
 <div class="flex-container">
-    <form action="/records" method="POST" class="flex-container" id="input-form">
+    <form action="/records" novalidate method="POST" class="flex-container" id="input-form">
         <input type="text" class="input-group-text" class="form-control" name="url_full" id="url-input" placeholder="Input URL here" required>
-         <a href="/records/success"><button type="submit" class="btn btn-outline-primary">Shorten</button></a>
+        <div class="valid-feedback">
+            URL provided!
+        </div>
+        <div class="invalid-feedback">
+            *Please enter a URL.
+        </div>
+         <a href="/records/success"><button type="submit" class="btn btn-outline-primary" id="submit-button">Shorten</button></a>
     </form>
 </div>
+
+<script>
+    const form = document.querySelector('#input-form')
+    form.addEventListener('submit', function onFormSubmitted(event) {
+    if (!form.checkValidity()) {
+        event.stopPropagation()
+        event.preventDefault()
+        /* alert('Form invalid')  //驗證不通過，就跳 alert */
+  }
+})
+    const submitButton = document.querySelector('#submit-button')
+    submitButton.addEventListener('click', function onSubmitButtonClicked(event) {
+        form.classList.add('was-validated')
+})
+</script>
