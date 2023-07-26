@@ -7,6 +7,7 @@
   }
 
 #app-name {
+    margin-top: 2rem;
     text-decoration: none;
     color: black;
 }  
@@ -19,12 +20,22 @@
     margin-top: 2rem;
 }
 
-#url-input {
-    width: 400px;
-    margin-bottom: 1rem;
+.btn {
+    margin-top: 1rem;
+    border-radius: 0%;
+}
+
+.btn-outline-primary {
+    width: 150px;
+}
+
+.btn-primary {
+    width: 100px;
 }
 
 .input-group-text {
+    width: 360px;
+    border-radius: 0%;
     text-align: left;
 }
 
