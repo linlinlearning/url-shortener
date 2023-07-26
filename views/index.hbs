@@ -7,17 +7,18 @@
         <div class="invalid-feedback">
             *Please enter a URL.
         </div>
-         <a href="/records/success"><button type="submit" class="btn btn-outline-primary" id="submit-button">Shorten</button></a>
+        <a href="/records/success"><button type="submit" class="btn btn-outline-primary" id="submit-button">Shorten</button></a>
     </form>
 </div>
 
 <script>
+    /* validate form input */
     const form = document.querySelector('#input-form')
     form.addEventListener('submit', function onFormSubmitted(event) {
     if (!form.checkValidity()) {
         event.stopPropagation()
         event.preventDefault()
-        /* alert('Form invalid')  //驗證不通過，就跳 alert */
+        /* alert('Form invalid') */
   }
 })
     const submitButton = document.querySelector('#submit-button')
