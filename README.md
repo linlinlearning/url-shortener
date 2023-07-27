@@ -7,6 +7,8 @@ This is an exercise project.
 - Click the copy button to copy the shortened URL to your clipboard.
 
 ## Getting started
+Make sure to install node.js and npm first.
+
 1. Clone the project
 ```
 git clone https://github.com/linlinlearning/url-shortener.git
