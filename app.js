@@ -4,11 +4,15 @@ const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 
+// require routes
+const routes = require('./routes')
+
 // include Record model
 const Record = require('./models/record.js')
 
-// include shorten function
+/* include shorten function --> move to routes/modules/records.js
 const shorten = require('./utils/shorten.js')
+*/
 
 // database-related settings 
 if (process.env.NODE_ENV !== 'production') {
@@ -33,32 +37,8 @@ app.use(express.static('public'))
 // use body-parser to process form contents
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// define route for index page
-app.get('/', (req, res) => {
-    res.render('index')
-})
-
-// define route for adding a URL
-app.post('/records', async (req, res) => {
-    const url_full = req.body.url_full
-    
-    // look up the input URL in the Record model 
-    const result = await Record.find({ url_full: url_full}).exec()
-
-    // if the input URL exists, use its short URL; else, use the shorten function to generate a short URL
-    if (result.length > 0) {
-        const foundData = result[0]
-        res.render('success', { url_full: url_full, url_short: foundData.url_short})
-    } else {
-        const url_short = shorten()
-        await Record.create({ 
-            url_full: url_full,
-            url_short: url_short 
-        })  
-            .then(() => res.render('success', { url_full, url_short })) 
-            .catch(error => console.log(error))
-    } 
-})
+// direct requests to routes
+app.use(routes)
 
 app.listen(port, () => {
     console.log(`Express is listening on localhost:${port}`)
