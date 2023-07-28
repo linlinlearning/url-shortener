@@ -8,30 +8,30 @@ router.get('/', (req, res) => {
     res.render('index')
 })
 
-//define route for adding a URL
-router.post('/', async (req, res) => {
+//define route: generate a short URL
+router.post('/', (req, res) => {
     const url_full = req.body.url_full
 
     // look up the input URL in the Record model 
-    const result = await Record.find({ url_full: url_full }).exec()
-
-    // if the input URL exists: use its short URL; else: use the shorten function to generate a short URL
-    if (result.length > 0) {
-        const foundData = result[0]
-        res.render('success', { url_full: url_full, url_short: foundData.url_short })
-    } else {
-        const randomCode = shorten()
-        const url_short = `http://${req.headers.host}/${randomCode}`
-        await Record.create({
-            url_full: url_full,
-            url_short: url_short
-        })
+    Record.findOne ({ url_full: url_full })
+       .lean()
+       .then((data) => {
+        if(!data) {
+            const randomCode = shorten()
+            const url_short = `http://${req.headers.host}/${randomCode}`
+            Record.create({
+                url_full: url_full,
+                url_short: url_short
+            })
             .then(() => res.render('success', { url_full, url_short }))
             .catch(error => console.log(error))
-    }
-})
+        } else {
+            res.render('success', { url_full, url_short: data.url_short })
+        }         
+    })
+})    
 
-// define route to redirect a shortened URL to the original URL
+// define route: redirect a short URL to the original URL
 router.get('/:randomCode', (req, res) => {
     const randomCode = req.params.randomCode
     Record.findOne({ url_short: `http://${req.headers.host}/${randomCode}` })
@@ -40,6 +40,7 @@ router.get('/:randomCode', (req, res) => {
             res.redirect(data.url_full)
         })
         .catch(error => console.error(error))
-})
+
+    })
 
 module.exports = router
