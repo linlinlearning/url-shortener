@@ -16,6 +16,7 @@ router.post('/', (req, res) => {
     Record.findOne ({ url_full: url_full })
        .lean()
        .then((data) => {
+        // if the input URL (url_full) is not in the database (the value of data is null)
         if(!data) {
             const randomCode = shorten()
             const url_short = `http://${req.headers.host}/${randomCode}`
@@ -37,10 +38,14 @@ router.get('/:randomCode', (req, res) => {
     Record.findOne({ url_short: `http://${req.headers.host}/${randomCode}` })
         .lean()
         .then((data) => {
-            res.redirect(data.url_full)
+            // if the provided short URL is not in the database
+            if(!data) {
+                res.render('error', { errorURL: `http://${req.headers.host}/${randomCode}` })
+            } else {
+                res.redirect(data.url_full)
+            }
         })
         .catch(error => console.error(error))
-
     })
 
 module.exports = router

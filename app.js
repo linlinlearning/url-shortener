@@ -7,10 +7,11 @@ const bodyParser = require('body-parser')
 // require routes
 const routes = require('./routes')
 
-// include Record model
+/* include Record model --> move to routes/modules/home.js
 const Record = require('./models/record.js')
+*/
 
-/* include shorten function --> move to routes/modules/records.js
+/* include shorten function --> move to routes/modules/home.js
 const shorten = require('./utils/shorten.js')
 */
 
